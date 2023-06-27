@@ -534,34 +534,36 @@ void getIPAddress (string &ipAddress)
         {
             continue;
         }
+        if (pEntry != NULL) {
         sa_family_t address_family = pEntry->ifa_addr->sa_family;
 
-        // Report IPv4 addresses
-        if (address_family == AF_INET)
-        {
-            if (pEntry->ifa_addr != NULL)
+            // Report IPv4 addresses
+            if (address_family == AF_INET)
             {
-                char buffer[INET_ADDRSTRLEN] = {0};
-                inet_ntop(address_family, &((struct sockaddr_in*)(pEntry->ifa_addr))->sin_addr, buffer, INET_ADDRSTRLEN);
-                if (ipAddress != "")
+                if (pEntry->ifa_addr != NULL)
                 {
-                    ipAddress += ",";
+                    char buffer[INET_ADDRSTRLEN] = {0};
+                    inet_ntop(address_family, &((struct sockaddr_in*)(pEntry->ifa_addr))->sin_addr, buffer, INET_ADDRSTRLEN);
+                    if (ipAddress != "")
+                    {
+                        ipAddress += ",";
+                    }
+                    ipAddress += buffer;
                 }
-                ipAddress += buffer;
             }
-        }
-
-        // Report IPv6 addresses
-        /*else if (address_family == AF_INET6)
-        {
-            if ( pEntry->ifa_addr != nullptr )
+    
+            // Report IPv6 addresses
+            /*else if (address_family == AF_INET6)
             {
-                char buffer[INET6_ADDRSTRLEN] = {0};
-                inet_ntop(address_family, &((struct sockaddr_in6*)(pEntry->ifa_addr))->sin6_addr, buffer, INET6_ADDRSTRLEN);
-                ipAddress += buffer;
-                ipAddress += " ";
-            }
-        }*/
+                if ( pEntry->ifa_addr != nullptr )
+                {
+                    char buffer[INET6_ADDRSTRLEN] = {0};
+                    inet_ntop(address_family, &((struct sockaddr_in6*)(pEntry->ifa_addr))->sin6_addr, buffer, INET6_ADDRSTRLEN);
+                    ipAddress += buffer;
+                    ipAddress += " ";
+                }
+            }*/
+        }
     }
 
     freeifaddrs(pIfaddrs);
